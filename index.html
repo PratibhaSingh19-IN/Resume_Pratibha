@@ -1,84 +1,819 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Pratibha Singh — Consumer and Market Insights Leader." />
-  <title>Pratibha Singh — Insights Leader</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pratibha Singh | UX Researcher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --accent-light: #ff6b6b;
+            --text: #2d3436;
+            --text-light: #636e72;
+            --bg: #ffffff;
+            --bg-alt: #f8f9fa;
+            --border: #e9ecef;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-hover: 0 8px 30px rgba(0,0,0,0.12);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text); background: var(--bg); line-height: 1.6; overflow-x: hidden;
+        }
+        nav {
+            position: fixed; top: 0; width: 100%; background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px); z-index: 1000; border-bottom: 1px solid var(--border);
+            transition: var(--transition);
+        }
+        nav.scrolled { box-shadow: var(--shadow); }
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center; height: 70px;
+        }
+        .logo { font-weight: 800; font-size: 1.2rem; color: var(--primary); text-decoration: none; letter-spacing: -0.5px; }
+        .logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--text-light); font-weight: 500; font-size: 0.9rem; transition: var(--transition); position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent); transition: var(--transition); }
+        .nav-links a:hover { color: var(--accent); }
+        .nav-links a:hover::after { width: 100%; }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--primary); }
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            background: var(--bg);
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a2e' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4h-4v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); opacity: 0.5;
+        }
+        .hero-container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; z-index: 1; }
+        .hero-content { color: var(--primary); }
+        .hero-tag { display: inline-block; background: #fff1f3; color: #b32645; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem; border: 1px solid #f3b8c3; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 700; line-height: 1.1; margin-bottom: 1rem; letter-spacing: -1px; }
+        .hero h1 span { color: var(--accent); font-style: italic; }
+        .hero-subtitle { font-size: 1.25rem; color: var(--text-light); margin-bottom: 1.5rem; font-weight: 300; }
+        .hero-bio { color: var(--text-light); font-size: 1rem; line-height: 1.8; margin-bottom: 2rem; max-width: 500px; }
+        .hero-stats { display: flex; gap: 2.5rem; margin-bottom: 2.5rem; }
+        .stat { text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: 800; color: var(--accent-light); display: block; }
+        .stat-label { font-size: 0.8rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 1px; }
+        .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn { padding: 0.875rem 2rem; border-radius: 50px; font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: var(--transition); display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; border: none; }
+        .btn-primary { background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4); }
+        .btn-primary:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5); }
+        .btn-secondary { background: transparent; color: var(--primary); border: 2px solid #b8bec5; }
+        .btn-secondary:hover { background: var(--bg-alt); border-color: var(--primary); }
+        .btn-outline { background: transparent; color: var(--accent); border: 2px solid var(--accent); }
+        .btn-outline:hover { background: var(--accent); color: white; }
+        .hero-visual { display: flex; justify-content: center; align-items: center; }
+        .journey-image { width: 100%; max-width: 600px; height: auto; border-radius: 16px; box-shadow: var(--shadow); }
+        section { padding: 6rem 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-tag { display: inline-block; color: var(--accent); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: var(--primary); margin-bottom: 1rem; }
+        .section-desc { color: var(--text-light); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+        .about { background: var(--bg-alt); }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+        .about-text h3 { font-size: 1.5rem; color: var(--primary); margin-bottom: 1rem; }
+        .about-text p { color: var(--text-light); margin-bottom: 1.5rem; line-height: 1.8; }
+        .strengths-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .strength-card { background: white; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); transition: var(--transition); }
+        .strength-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+        .strength-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), var(--accent-light)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; margin-bottom: 1rem; }
+        .strength-card h4 { font-size: 1rem; color: var(--primary); margin-bottom: 0.5rem; }
+        .strength-card p { font-size: 0.85rem; color: var(--text-light); margin: 0; }
+        .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+        .skill-category { background: white; border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .skill-category h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+        .skill-category h3::before { content: ''; width: 4px; height: 20px; background: var(--accent); border-radius: 2px; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .skill-tag { background: var(--bg-alt); color: var(--text); padding: 0.4rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 500; border: 1px solid var(--border); transition: var(--transition); }
+        .skill-tag:hover { background: var(--accent); color: white; border-color: var(--accent); }
+        .experience { background: var(--bg-alt); }
+        .timeline { position: relative; max-width: 800px; margin: 0 auto; }
+        .timeline::before { content: ''; position: absolute; left: 50%; transform: translateX(-50%); width: 2px; height: 100%; background: linear-gradient(to bottom, var(--accent), var(--accent-light)); }
+        .timeline-item { display: flex; justify-content: flex-end; padding-right: 50%; position: relative; margin-bottom: 3rem; }
+        .timeline-item:nth-child(even) { justify-content: flex-start; padding-right: 0; padding-left: 50%; }
+        .timeline-content { background: white; padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); max-width: 350px; position: relative; transition: var(--transition); }
+        .timeline-content:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+        .timeline-dot { position: absolute; width: 16px; height: 16px; background: var(--accent); border-radius: 50%; top: 2rem; left: 50%; transform: translateX(-50%); border: 4px solid var(--bg-alt); z-index: 2; }
+        .timeline-date { color: var(--accent); font-weight: 700; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .timeline-title { font-size: 1.1rem; color: var(--primary); margin-bottom: 0.25rem; }
+        .timeline-company { color: var(--text-light); font-size: 0.9rem; margin-bottom: 1rem; }
+        .timeline-desc { color: var(--text-light); font-size: 0.9rem; line-height: 1.7; }
+        .timeline-desc ul { list-style: none; padding: 0; }
+        .timeline-desc li { padding-left: 1.2rem; position: relative; margin-bottom: 0.4rem; }
+        .timeline-desc li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+        .case-studies-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; }
+        .case-study-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); border: 1px solid var(--border); display: flex; flex-direction: column; }
+        .case-study-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+        .case-study-header { padding: 2rem; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; position: relative; overflow: hidden; }
+        .case-study-header::after { content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%; background: radial-gradient(circle, rgba(233,69,96,0.2) 0%, transparent 70%); }
+        .case-study-tag { display: inline-block; background: rgba(255,255,255,0.2); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .case-study-header h3 { font-size: 1.3rem; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+        .case-study-header p { font-size: 0.9rem; opacity: 0.8; position: relative; z-index: 1; }
+        .case-study-body { padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; }
+        .case-study-section { margin-bottom: 1.5rem; }
+        .case-study-section:last-child { margin-bottom: 0; margin-top: auto; }
+        .case-study-section h4 { font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+        .case-study-section p, .case-study-section ul { color: var(--text-light); font-size: 0.95rem; line-height: 1.7; }
+        .case-study-section ul { list-style: none; padding: 0; }
+        .case-study-section li { padding-left: 1.2rem; position: relative; margin-bottom: 0.3rem; }
+        .case-study-section li::before { content: '•'; position: absolute; left: 0; color: var(--accent); }
+        .impact-badge { display: inline-block; background: linear-gradient(135deg, #00b894, #00cec9); color: white; padding: 0.5rem 1rem; border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-top: 0.5rem; }
+        .method-tag { display: inline-block; background: var(--bg-alt); color: var(--text); padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.8rem; font-weight: 500; margin-right: 0.5rem; margin-bottom: 0.5rem; border: 1px solid var(--border); }
+        .case-study-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent); font-weight: 600; text-decoration: none; margin-top: 1rem; transition: var(--transition); }
+        .case-study-link:hover { color: var(--accent-light); gap: 0.75rem; }
+        .severity-scale { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+        .severity-item { display: flex; align-items: center; gap: 0.35rem; font-size: 0.8rem; color: var(--text-light); }
+        .severity-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .severity-0 { background: #00b894; }
+        .severity-1 { background: #74b9ff; }
+        .severity-2 { background: #fdcb6e; }
+        .severity-3 { background: #e17055; }
+        .severity-4 { background: #d63031; }
+        .writing { background: var(--bg-alt); }
+        .writing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .writing-card { background: white; border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); border: 1px solid var(--border); transition: var(--transition); display: flex; flex-direction: column; }
+        .writing-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+        .writing-meta { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+        .writing-platform { background: var(--accent); color: white; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+        .writing-date { color: var(--text-light); font-size: 0.85rem; }
+        .writing-card h3 { font-size: 1.15rem; color: var(--primary); margin-bottom: 1rem; line-height: 1.4; }
+        .writing-card p { color: var(--text-light); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem; flex-grow: 1; }
+        .writing-card a { color: var(--accent); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: var(--transition); }
+        .writing-card a:hover { color: var(--accent-light); gap: 0.75rem; }
+        .behance-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .behance-card { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); transition: var(--transition); text-decoration: none; color: inherit; display: block; }
+        .behance-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+        .behance-thumb { height: 160px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; position: relative; overflow: hidden; }
+        .behance-thumb::after { content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%; background: radial-gradient(circle, rgba(233,69,96,0.3) 0%, transparent 70%); }
+        .behance-info { padding: 1.5rem; }
+        .behance-info h4 { font-size: 1rem; color: var(--primary); margin-bottom: 0.5rem; }
+        .behance-info p { font-size: 0.85rem; color: var(--text-light); }
+        .behance-stats { display: flex; gap: 1rem; margin-top: 1rem; font-size: 0.8rem; color: var(--text-light); }
+        .behance-stat { display: flex; align-items: center; gap: 0.25rem; }
+        .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .cert-card { background: white; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border); transition: var(--transition); display: flex; align-items: flex-start; gap: 1rem; }
+        .cert-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+        .cert-icon { width: 48px; height: 48px; background: var(--bg-alt); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+        .cert-info h4 { font-size: 1rem; color: var(--primary); margin-bottom: 0.25rem; }
+        .cert-info p { font-size: 0.85rem; color: var(--text-light); }
+        .contact { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; text-align: center; }
+        .contact .section-title { color: white; }
+        .contact .section-desc { color: rgba(255,255,255,0.7); }
+        .contact-grid { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-top: 3rem; }
+        .contact-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.15); padding: 2rem; border-radius: var(--radius); min-width: 250px; transition: var(--transition); }
+        .contact-card:hover { background: rgba(255,255,255,0.15); transform: translateY(-4px); }
+        .contact-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .contact-card h4 { font-size: 1rem; margin-bottom: 0.5rem; }
+        .contact-card a { color: var(--accent-light); text-decoration: none; font-weight: 500; transition: var(--transition); }
+        .contact-card a:hover { color: white; }
+        footer { background: var(--primary); color: rgba(255,255,255,0.5); text-align: center; padding: 2rem 0; font-size: 0.85rem; }
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero-container { grid-template-columns: 1fr; text-align: center; gap: 2rem; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero-stats { justify-content: center; }
+            .hero-cta { justify-content: center; }
+            .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .strengths-grid { grid-template-columns: 1fr; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .timeline::before { left: 20px; }
+            .timeline-item, .timeline-item:nth-child(even) { justify-content: flex-start; padding-right: 0; padding-left: 50px; }
+            .timeline-dot { left: 20px; transform: none; }
+            .section-title { font-size: 2rem; }
+            .case-studies-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="index.html" aria-label="Pratibha Singh home">PS<span>.</span></a>
-    <nav aria-label="Primary navigation">
-      <a class="active" href="index.html">About</a>
-      <a href="projects.html">Projects <span aria-hidden="true">↗</span></a>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero" aria-labelledby="intro-title">
-      <p class="eyebrow">Consumer &amp; Market Intelligence / 12+ years</p>
-      <h1 id="intro-title">Turning customer<br />understanding into<br /><em>decisive action.</em></h1>
-      <div class="hero-bottom">
-        <p>Pratibha Singh is an insights leader who connects research, behavioral data, and compelling narratives to shape products, brands, and growth.</p>
-        <a class="round-link" href="#experience">Explore profile <span>↓</span></a>
-      </div>
-    </section>
-
-    <nav class="section-nav" aria-label="On this page">
-      <a href="#about">Overview</a><a href="#expertise">Expertise</a><a href="#experience">Experience</a><a href="#credentials">Credentials</a><a href="#connect">Connect</a>
-    </nav>
-
-    <section class="resume" id="about" aria-labelledby="about-heading">
-      <div class="section-heading">
-        <p class="eyebrow">01 / Leadership profile</p>
-        <h2 id="about-heading">Insight with<br /><em>influence.</em></h2>
-      </div>
-      <div class="resume-content">
-        <p class="intro">Insights leader with 12+ years of global experience guiding large-scale primary research programmes that inform product strategy, go-to-market decisions, and customer experience transformation.</p>
-        <p class="body-copy">With a career spanning FMCG, healthcare, and adtech, I bring together consumer behaviour, evidence-based decision-making, and executive storytelling. My focus is simple: make the voice of the customer impossible to ignore.</p>
-        <div class="impact-strip" aria-label="Career highlights"><div><strong>12+</strong><span>years in insights</span></div><div><strong>3</strong><span>industry domains</span></div><div><strong>Global</strong><span>research leadership</span></div></div>
-      </div>
-    </section>
-
-    <section class="expertise" id="expertise" aria-labelledby="expertise-heading">
-      <div><p class="eyebrow">02 / Capabilities</p><h2 id="expertise-heading">From questions<br />to <em>clarity.</em></h2></div>
-      <div class="capability-list">
-        <article><span>01</span><div><h3>Research &amp; intelligence</h3><p>Qualitative, quantitative, and mixed-method studies; segmentation; pricing; MaxDiff; conjoint; competitive intelligence.</p></div></article>
-        <article><span>02</span><div><h3>Product &amp; experience</h3><p>Product insight integration, journey mapping, usability testing, heuristics evaluation, and roadmap influence.</p></div></article>
-        <article><span>03</span><div><h3>Decision enablement</h3><p>Executive storytelling, deep-dive insight workshops, cross-functional collaboration, and research operations leadership.</p></div></article>
-        <article><span>04</span><div><h3>Measurement &amp; tools</h3><p>Brand lift, A/B testing, Tableau, Power BI, Excel, Qualtrics, Sawtooth, Claude, and ChatGPT.</p></div></article>
-      </div>
-    </section>
-
-    <section class="resume experience" id="experience" aria-labelledby="experience-heading">
-      <div class="section-heading"><p class="eyebrow">03 / Career journey</p><h2 id="experience-heading">Leading the<br /><em>learning loop.</em></h2></div>
-      <div class="resume-content">
-        <div class="resume-block">
-          <article class="timeline-item"><div><p class="date">Jul 2025 — Present</p><p class="role">Manager, Consumer Insights</p><p class="company">InMobi</p></div><p>Lead consumer insights across research, operations, and commercial enablement. Partner with Client Solutions on positioning, assess campaign impact through brand lift and attitude-behaviour studies, and combine primary research with behavioural data to drive business decisions.</p></article>
-          <article class="timeline-item"><div><p class="date">Jan 2019 — Jul 2025</p><p class="role">Manager → Senior Manager,<br />Global Market Insights</p><p class="company">U.S. Pharmacopeia</p></div><p>Directed primary and secondary research for product development and market prioritisation. Built global research programmes and scalable methodologies, delivering executive-ready insights for product, marketing, and go-to-market teams.</p></article>
-          <article class="timeline-item"><div><p class="date">2015 — 2018</p><p class="role">Analyst → Senior Associate</p><p class="company">Optimal Strategix Group</p></div><p>Delivered qualitative and quantitative research for healthcare and life sciences clients, translating interviews and surveys into strategic recommendations for new product development.</p></article>
-          <article class="timeline-item"><div><p class="date">2012 — 2014</p><p class="role">Analyst → Sr. Research Analyst</p><p class="company">RS Market Research Solutions</p></div><p>Supported multi-category consumer research across FMCG and healthcare, building a strong foundation in consumer understanding and research delivery.</p></article>
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Pratibha<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#case-studies">Case Studies</a></li>
+                <li><a href="#writing">Writing</a></li>
+                <li><a href="#behance">Portfolio</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-btn">☰</button>
         </div>
-      </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="hero-content">
+                <span class="hero-tag">🔬 UX Researcher & Insights Professional</span>
+                <h1>Turning customer/user<br>understanding into<br><span>decisive action.</span></h1>
+                <p class="hero-subtitle">12+ Years Experience | 5+ Years in UX Research</p>
+                <p class="hero-bio">Dynamic and results-driven researcher experienced in leading user & customer-centric research initiatives, driving product innovation and shaping strategy across Healthcare, AdTech, Fintech, eCommerce, and Consumer Goods.</p>
+                <div class="hero-stats">
+                    <div class="stat"><span class="stat-number">12+</span><span class="stat-label">Years Exp.</span></div>
+                    <div class="stat"><span class="stat-number">5+</span><span class="stat-label">UX Research</span></div>
+                    <div class="stat"><span class="stat-number">6</span><span class="stat-label">Industries</span></div>
+                </div>
+                <div class="hero-cta">
+                    <a href="https://www.behance.net/PratibhaSinghUXR" target="_blank" class="btn btn-primary">View Behance Portfolio →</a>
+                    <a href="https://substack.com/@pratibhasingh19" target="_blank" class="btn btn-secondary">Read My Substack</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <img class="journey-image" src="professional-journey.png" alt="Career journey across FMCG, healthcare, and AdTech" />
+            </div>
+        </div>
     </section>
 
-    <section class="credentials" id="credentials" aria-labelledby="credentials-heading">
-      <div><p class="eyebrow">04 / Credentials</p><h2 id="credentials-heading">Built on<br /><em>curiosity.</em></h2></div>
-      <div class="credentials-content"><div><h3>Education</h3><p class="role">P.G.D.M. (Marketing)</p><p class="company">JIMS, Rohini, Delhi · 2012</p></div><div><h3>Research &amp; UX learning</h3><p>UX Design Process — Google<br />Foundations of User Experience Design — Google<br />User Research Methods and Best Practices — IxDF<br />Introduction to UX Research &amp; Design — Georgia Tech</p></div><div><h3>Recognition</h3><p>Bronze award for leading a mentoring programme initiative; plus a Silver award, two Bronze awards, and three Star Premium awards for successful client delivery.</p></div></div>
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-tag">About Me</span>
+                <h2 class="section-title">Research-Driven. Impact-Focused.</h2>
+                <p class="section-desc">I bridge the gap between user needs and business strategy through rigorous research and compelling storytelling.</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-text fade-in">
+                    <h3>My Research Philosophy</h3>
+                    <p>I believe great research doesn't just answer questions — it changes how teams think about their users. Over 12 years, I've led research initiatives that have directly influenced product roadmaps, redesigned customer experiences, and uncovered market opportunities worth millions.</p>
+                    <p>My strength lies in integrating multiple data sources — primary research, secondary research, and data analytics — to present comprehensive, actionable insights that stakeholders can act on immediately.</p>
+                    <p>Currently, I'm leveraging Generative AI tools to enhance survey frameworks and automate reporting, making research faster without sacrificing depth. I also write about research methodology and industry trends on Substack.</p>
+                </div>
+                <div class="strengths-grid fade-in">
+                    <div class="strength-card">
+                        <div class="strength-icon">🎯</div>
+                        <h4>Significance</h4>
+                        <p>Independent & prioritize projects based on their impact</p>
+                    </div>
+                    <div class="strength-card">
+                        <div class="strength-icon">🔍</div>
+                        <h4>Strategic</h4>
+                        <p>Able to quickly spot relevant patterns and issues</p>
+                    </div>
+                    <div class="strength-card">
+                        <div class="strength-icon">⚡</div>
+                        <h4>Achiever</h4>
+                        <p>Work hard and possess a great deal of stamina</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="contact" id="connect" aria-labelledby="contact-title">
-      <p class="eyebrow">05 / Start a conversation</p>
-      <h2 id="contact-title">Let’s make insight<br /><em>matter.</em></h2>
-      <a class="email-link" href="mailto:singh19pratibha@gmail.com">singh19pratibha@gmail.com <span>↗</span></a>
+    <section class="skills" id="skills">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-tag">Capabilities</span>
+                <h2 class="section-title">Research Skills & Tools</h2>
+                <p class="section-desc">A comprehensive toolkit built over 12 years of hands-on research across industries.</p>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category fade-in">
+                    <h3>Qualitative Research</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">In-Depth Interviews</span>
+                        <span class="skill-tag">Persona Development</span>
+                        <span class="skill-tag">Empathy Mapping</span>
+                        <span class="skill-tag">User Journey Maps</span>
+                        <span class="skill-tag">Ethnography</span>
+                        <span class="skill-tag">Contextual Inquiry</span>
+                        <span class="skill-tag">Co-design Workshops</span>
+                    </div>
+                </div>
+                <div class="skill-category fade-in">
+                    <h3>Quantitative Research</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Usability Testing</span>
+                        <span class="skill-tag">Surveys</span>
+                        <span class="skill-tag">Max-Diff Analysis</span>
+                        <span class="skill-tag">Competitive Analysis</span>
+                        <span class="skill-tag">Heuristic Evaluation</span>
+                        <span class="skill-tag">Brand Lift Studies</span>
+                        <span class="skill-tag">Attitude-Behaviour Studies</span>
+                    </div>
+                </div>
+                <div class="skill-category fade-in">
+                    <h3>Technical & Analytics</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Qualtrics</span>
+                        <span class="skill-tag">SPSS</span>
+                        <span class="skill-tag">Sawtooth</span>
+                        <span class="skill-tag">Tableau</span>
+                        <span class="skill-tag">MS Excel</span>
+                        <span class="skill-tag">Survey Programming</span>
+                        <span class="skill-tag">Data Visualization</span>
+                        <span class="skill-tag">Data Analytics</span>
+                    </div>
+                </div>
+                <div class="skill-category fade-in">
+                    <h3>Professional Skills</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Deep-dive Insights Workshops</span>
+                        <span class="skill-tag">Storytelling via Research</span>
+                        <span class="skill-tag">Stakeholder Engagement</span>
+                        <span class="skill-tag">Global Client Management</span>
+                        <span class="skill-tag">Vendor Management</span>
+                        <span class="skill-tag">Generative AI for Research</span>
+                        <span class="skill-tag">Strategic Consulting</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
-  </main>
 
-  <footer><p>© 2026 Pratibha Singh</p><div><a href="https://www.linkedin.com/in/pratibha-singh-33a8a624/" target="_blank" rel="noreferrer">LinkedIn</a><a href="https://substack.com/@pratibhasingh19/posts" target="_blank" rel="noreferrer">Substack</a></div></footer>
+    <section class="experience" id="experience">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-tag">Career Journey</span>
+                <h2 class="section-title">Work Experience</h2>
+                <p class="section-desc">A decade of building research capabilities and driving product innovation across global organizations.</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <div class="timeline-date">July 2025 – Present</div>
+                        <h3 class="timeline-title">Manager, Consumer Insights</h3>
+                        <p class="timeline-company">InMobi</p>
+                        <div class="timeline-desc">
+                            <ul>
+                                <li>Conduct UX and behavioral research to inform product strategies</li>
+                                <li>Lead brand lift and attitude-behaviour studies to assess campaign effectiveness and user sentiment</li>
+                                <li>Leverage Generative AI tools to enhance survey frameworks and automate reporting</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <div class="timeline-date">Jan 2019 – July 2025</div>
+                        <h3 class="timeline-title">Manager → Senior Manager, Global Market Insights</h3>
+                        <p class="timeline-company">US Pharmacopeia</p>
+                        <div class="timeline-desc">
+                            <ul>
+                                <li>Drove insight generation for new product development and digital experience initiatives</li>
+                                <li>Built in-house capability for advanced research</li>
+                                <li>Led strategic consulting projects aligned with innovation goals</li>
+                                <li>Managed end-to-end market and user research to assess product uptake and gaps</li>
+                                <li>Integrated insights from primary, secondary and data analytics sources</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2015 – 2018</div>
+                        <h3 class="timeline-title">Analyst → Senior Associate</h3>
+                        <p class="timeline-company">Optimal Strategix Group</p>
+                        <div class="timeline-desc">
+                            <ul>
+                                <li>Managed full-cycle CX research for healthcare, life sciences, and eCommerce products</li>
+                                <li>Conducted qualitative and quantitative studies to inform design and customer strategy</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2012 – 2014</div>
+                        <h3 class="timeline-title">Analyst → Senior Research Analyst</h3>
+                        <p class="timeline-company">RS Market Research Solutions (Intage Inc., Japan)</p>
+                        <div class="timeline-desc">
+                            <ul>
+                                <li>Joined as a fresher and gained ground-level knowledge of research methodology</li>
+                                <li>Built foundational skills in both qualitative and quantitative research approaches</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="case-studies" id="case-studies">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-tag">Portfolio</span>
+                <h2 class="section-title">Featured Case Studies</h2>
+                <p class="section-desc">Real-world research projects that drove product decisions and business impact. View detailed work on my Behance portfolio.</p>
+            </div>
+            <div class="case-studies-grid">
+                <!-- Case Study 1: CloudNine Heuristics Evaluation -->
+                <div class="case-study-card fade-in">
+                    <div class="case-study-header">
+                        <span class="case-study-tag">Healthcare | Heuristic Evaluation</span>
+                        <h3>CloudNine Hospital App — Heuristics Evaluation</h3>
+                        <p>Self-Initiated Project | Healthcare UX</p>
+                    </div>
+                    <div class="case-study-body">
+                        <div class="case-study-section">
+                            <h4>Problem</h4>
+                            <p>CloudNine Hospital's app offers online services (consultation booking, lab tests, scans, medicine orders) but users faced friction during the most critical task — booking an in-person consultation. The app needed a systematic usability audit to identify design problems against established heuristics.</p>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>My Role</h4>
+                            <p>Solo researcher conducting a full heuristic evaluation. Evaluated the "Booking in-person consultation" task flow against Jakob Nielsen's 10 usability heuristics, assigning severity ratings (0–4) to each finding.</p>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Methods Used</h4>
+                            <span class="method-tag">Heuristic Evaluation</span>
+                            <span class="method-tag">Jakob Nielsen's 10 Heuristics</span>
+                            <span class="method-tag">Severity Rating (0–4)</span>
+                            <span class="method-tag">Task Flow Analysis</span>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Key Findings (Severity Breakdown)</h4>
+                            <div class="severity-scale">
+                                <span class="severity-item"><span class="severity-dot severity-0"></span>0: No problem (2)</span>
+                                <span class="severity-item"><span class="severity-dot severity-1"></span>1: Cosmetic (1)</span>
+                                <span class="severity-item"><span class="severity-dot severity-2"></span>2: Minor (2)</span>
+                                <span class="severity-item"><span class="severity-dot severity-3"></span>3: Major (3)</span>
+                                <span class="severity-item"><span class="severity-dot severity-4"></span>4: Catastrophe (1)</span>
+                            </div>
+                            <ul style="margin-top: 1rem;">
+                                <li><strong>Visibility of System Status (Severity 3):</strong> "Select Consultation Type" button didn't show types upfront — users had to click to discover options. No progress bar to indicate remaining steps.</li>
+                                <li><strong>Match with Real World (Severity 3):</strong> "PayNow" button actually opened payment options (not immediate payment), causing confusion and potential drop-off.</li>
+                                <li><strong>Help & Documentation (Severity 4):</strong> Support page took multiple clicks to reach and contained inaccurate booking process info — evidenced by 5 user dislikes on the process.</li>
+                                <li><strong>Consistency (Severity 2):</strong> Mismatched icons for same services across Home and Help & Support pages.</li>
+                                <li><strong>Aesthetic Design (Severity 2):</strong> Non-intuitive city icons and overly verbose doctor profile spread across 3 pages.</li>
+                            </ul>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Impact</h4>
+                            <span class="impact-badge">9 usability issues identified | 5 actionable fixes prioritized</span>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Reflection</h4>
+                            <p>Even well-established healthcare apps have fundamental usability gaps. The "PayNow" mislabel was a classic example of how a single button can create false expectations and drive users away. Severity ratings helped stakeholders prioritize fixes by business risk, not just design preference.</p>
+                            <a href="https://www.behance.net/gallery/220123373/Heuristics-Evaluation-CloudNine-App" target="_blank" class="case-study-link">View Full Project on Behance →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case Study 2: Healthcare -->
+                <div class="case-study-card fade-in">
+                    <div class="case-study-header">
+                        <span class="case-study-tag">Healthcare</span>
+                        <h3>Digital Health Platform UX Research</h3>
+                        <p>US Pharmacopeia | 2022 – 2023</p>
+                    </div>
+                    <div class="case-study-body">
+                        <div class="case-study-section">
+                            <h4>Problem</h4>
+                            <p>Healthcare professionals struggled to access and navigate USP's digital reference standards platform, leading to low adoption and frustrated users seeking competitor solutions.</p>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>My Role</h4>
+                            <p>Led end-to-end UX research as Senior Manager, Global Market Insights. Managed a cross-functional team of researchers and collaborated with product and design teams.</p>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Methods Used</h4>
+                            <span class="method-tag">User Interviews</span>
+                            <span class="method-tag">Journey Mapping</span>
+                            <span class="method-tag">Usability Testing</span>
+                            <span class="method-tag">Competitive Analysis</span>
+                            <span class="method-tag">Surveys</span>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Key Findings</h4>
+                            <ul>
+                                <li>Users spent 40% more time searching for standards than on competitor platforms</li>
+                                <li>Information architecture didn't match mental models of lab technicians vs. quality managers</li>
+                                <li>Mobile access was critical for field-based quality inspectors</li>
+                            </ul>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Impact</h4>
+                            <span class="impact-badge">Redesigned IA adopted | 35% task completion improvement</span>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Reflection</h4>
+                            <p>Segmenting users by role (not just title) was critical. What a lab tech needs at 9 AM differs drastically from what a quality manager needs at 5 PM.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case Study 3: AdTech -->
+                <div class="case-study-card fade-in">
+                    <div class="case-study-header">
+                        <span class="case-study-tag">AdTech</span>
+                        <h3>Campaign Effectiveness & Brand Lift Research</h3>
+                        <p>InMobi | 2025 – Present</p>
+                    </div>
+                    <div class="case-study-body">
+                        <div class="case-study-section">
+                            <h4>Problem</h4>
+                            <p>Advertisers lacked clear understanding of how InMobi's mobile ad campaigns influenced brand perception and user behavior beyond click-through rates.</p>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>My Role</h4>
+                            <p>Manager, Consumer Insights. Designed and executed brand lift and attitude-behaviour studies. Leveraged GenAI to automate reporting and enhance survey frameworks.</p>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Methods Used</h4>
+                            <span class="method-tag">Brand Lift Studies</span>
+                            <span class="method-tag">Attitude-Behaviour Surveys</span>
+                            <span class="method-tag">A/B Testing</span>
+                            <span class="method-tag">Generative AI</span>
+                            <span class="method-tag">Data Analytics</span>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Key Findings</h4>
+                            <ul>
+                                <li>Video ad formats drove 3x higher brand recall than static banners</li>
+                                <li>Attitude shifts didn't correlate with immediate purchase intent — a 2-week lag existed</li>
+                                <li>GenAI-powered open-ended analysis uncovered sentiment patterns missed by traditional coding</li>
+                            </ul>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Impact</h4>
+                            <span class="impact-badge">GenAI reporting adopted team-wide | Faster insight delivery</span>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Reflection</h4>
+                            <p>Automating sentiment analysis with GenAI saved 60% of coding time, but human oversight remained essential for nuanced emotional responses.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Case Study 4: Healthcare/Life Sciences -->
+                <div class="case-study-card fade-in">
+                    <div class="case-study-header">
+                        <span class="case-study-tag">Healthcare / Life Sciences</span>
+                        <h3>Pharma Product Uptake & Gap Analysis</h3>
+                        <p>Optimal Strategix Group | 2016 – 2018</p>
+                    </div>
+                    <div class="case-study-body">
+                        <div class="case-study-section">
+                            <h4>Problem</h4>
+                            <p>A pharmaceutical client needed to understand why their new drug wasn't achieving projected market uptake despite strong clinical trial results.</p>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>My Role</h4>
+                            <p>Senior Associate leading full-cycle CX research. Managed qualitative and quantitative studies across multiple markets to inform design and customer strategy.</p>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Methods Used</h4>
+                            <span class="method-tag">In-Depth Interviews</span>
+                            <span class="method-tag">Max-Diff Analysis</span>
+                            <span class="method-tag">Ethnography</span>
+                            <span class="method-tag">Competitive Analysis</span>
+                            <span class="method-tag">Journey Mapping</span>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Key Findings</h4>
+                            <ul>
+                                <li>Physicians weren't rejecting the drug — they simply didn't know when to prescribe it over existing options</li>
+                                <li>Patient education materials were too clinical, failing to address real-world adherence concerns</li>
+                                <li>Pharmacists were the hidden influencers — 70% of patients asked them for recommendations</li>
+                            </ul>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Impact</h4>
+                            <span class="impact-badge">Repositioning strategy adopted | 28% uptake increase in 6 months</span>
+                        </div>
+                        <div class="case-study-section">
+                            <h4>Reflection</h4>
+                            <p>Never underestimate the "middleman" in healthcare. The patient journey has more stakeholders than you initially map — always dig deeper.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="https://www.behance.net/PratibhaSinghUXR" target="_blank" class="btn btn-primary">View Full Portfolio on Behance →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="writing" id="writing">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-tag">Thought Leadership</span>
+                <h2 class="section-title">Research Writing</h2>
+                <p class="section-desc">I write about UX research methodology, industry trends, and the intersection of technology and human behavior on Substack.</p>
+            </div>
+            <div class="writing-grid">
+                <div class="writing-card fade-in">
+                    <div class="writing-meta">
+                        <span class="writing-platform">Substack</span>
+                        <span class="writing-date">May 2, 2026</span>
+                    </div>
+                    <h3>"Are we at the vaccines-before-the-healthcare-system moment for smart wearables?"</h3>
+                    <p>A calorie-tracking app made me switch from chai to black coffee (only temporarily though). Exploring how consumer health tech is outpacing healthcare infrastructure — and what that means for UX researchers designing in this space.</p>
+                    <a href="https://substack.com/@pratibhasingh19/posts" target="_blank">Read on Substack →</a>
+                </div>
+                <div class="writing-card fade-in">
+                    <div class="writing-meta">
+                        <span class="writing-platform">Substack</span>
+                        <span class="writing-date">May 1, 2026</span>
+                    </div>
+                    <h3>"Why Direct Survey Questions Fail for High-Stigma Products — And What to Ask Instead"</h3>
+                    <p>Long before digital impressions were counted, shopkeepers at local melas would hire someone to shout out loud. Drawing parallels between traditional market research and modern UX research methods for sensitive topics.</p>
+                    <a href="https://substack.com/@pratibhasingh19/posts" target="_blank">Read on Substack →</a>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="https://substack.com/@pratibhasingh19" target="_blank" class="btn btn-outline">Follow My Substack →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="behance" id="behance">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-tag">Detailed Work</span>
+                <h2 class="section-title">Behance Portfolio Projects</h2>
+                <p class="section-desc">Deep-dive research projects with full methodology, artifacts, and deliverables. Click any project to view on Behance.</p>
+            </div>
+            <div class="behance-grid">
+                <a href="https://www.behance.net/gallery/220123633/Persona-Development" target="_blank" class="behance-card fade-in">
+                    <div class="behance-thumb">👤</div>
+                    <div class="behance-info">
+                        <h4>Persona Development</h4>
+                        <p>UX Research Project — End-to-end persona creation process with research methodology and validation.</p>
+                        <div class="behance-stats"><span class="behance-stat">👁 11 views</span></div>
+                    </div>
+                </a>
+                <a href="https://www.behance.net/gallery/220123489/Online-onboarding-tool-evaluation-improvement" target="_blank" class="behance-card fade-in">
+                    <div class="behance-thumb">⭐</div>
+                    <div class="behance-info">
+                        <h4>Online Onboarding Tool Evaluation & Improvement</h4>
+                        <p>Market Research & UX Research Project — Full evaluation of an onboarding flow with actionable redesign recommendations.</p>
+                        <div class="behance-stats">
+                            <span class="behance-stat">❤ 2 appreciations</span>
+                            <span class="behance-stat">👁 18 views</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="https://www.behance.net/gallery/220123413/Concept-Testing-UX-Research-Market-Research" target="_blank" class="behance-card fade-in">
+                    <div class="behance-thumb">🎯</div>
+                    <div class="behance-info">
+                        <h4>Concept Testing | UX Research | Market Research</h4>
+                        <p>Mixed-methods concept validation study combining qualitative and quantitative approaches.</p>
+                        <div class="behance-stats">
+                            <span class="behance-stat">❤ 3 appreciations</span>
+                            <span class="behance-stat">👁 27 views</span>
+                        </div>
+                    </div>
+                </a>
+                <a href="https://www.behance.net/gallery/220123373/Heuristics-Evaluation-CloudNine-App" target="_blank" class="behance-card fade-in">
+                    <div class="behance-thumb">🔍</div>
+                    <div class="behance-info">
+                        <h4>Heuristics Evaluation | CloudNine App</h4>
+                        <p>Systematic heuristic evaluation of a healthcare app identifying usability violations and priority fixes.</p>
+                        <div class="behance-stats"><span class="behance-stat">👁 26 views</span></div>
+                    </div>
+                </a>
+                <a href="https://www.behance.net/gallery/220123337/Decoding-user-needs-to-evolve-an-age-old-product" target="_blank" class="behance-card fade-in">
+                    <div class="behance-thumb">🔄</div>
+                    <div class="behance-info">
+                        <h4>Decoding User Needs to Evolve an Age-Old Product</h4>
+                        <p>Strategic research project uncovering what really matters for users when evolving legacy products.</p>
+                        <div class="behance-stats"><span class="behance-stat">👁 10 views</span></div>
+                    </div>
+                </a>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="https://www.behance.net/PratibhaSinghUXR" target="_blank" class="btn btn-primary">View All Projects on Behance →</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="certs" id="certs">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-tag">Credentials</span>
+                <h2 class="section-title">Certifications & Education</h2>
+                <p class="section-desc">Continuous learning to stay at the forefront of research methodology and design thinking.</p>
+            </div>
+            <div class="certs-grid">
+                <div class="cert-card fade-in">
+                    <div class="cert-icon">🎓</div>
+                    <div class="cert-info">
+                        <h4>P.G.D.M. (Marketing)</h4>
+                        <p>JIMS, Rohini, Delhi | 2012</p>
+                    </div>
+                </div>
+                <div class="cert-card fade-in">
+                    <div class="cert-icon">🔍</div>
+                    <div class="cert-info">
+                        <h4>Foundations of User Experience Design</h4>
+                        <p>Google UX Design Certificate</p>
+                    </div>
+                </div>
+                <div class="cert-card fade-in">
+                    <div class="cert-icon">🧠</div>
+                    <div class="cert-info">
+                        <h4>User Research Methods and Best Practices</h4>
+                        <p>Interaction Design Foundation (IxDF)</p>
+                    </div>
+                </div>
+                <div class="cert-card fade-in">
+                    <div class="cert-icon">💻</div>
+                    <div class="cert-info">
+                        <h4>Introduction to UX Research & Design</h4>
+                        <p>Georgia Tech</p>
+                    </div>
+                </div>
+                <div class="cert-card fade-in">
+                    <div class="cert-icon">🗣️</div>
+                    <div class="cert-info">
+                        <h4>Certification in Qualitative Research</h4>
+                        <p>University of Amsterdam</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-tag" style="color: var(--accent-light);">Get In Touch</span>
+                <h2 class="section-title">Let's Connect</h2>
+                <p class="section-desc">Interested in collaborating or want to discuss research opportunities? Reach out — I'd love to hear from you.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">📧</div>
+                    <h4>Email</h4>
+                    <a href="mailto:singh19pratibha@gmail.com">singh19pratibha@gmail.com</a>
+                </div>
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">💼</div>
+                    <h4>LinkedIn</h4>
+                    <a href="https://www.linkedin.com/in/pratibha-singh-33a8a624/" target="_blank">linkedin.com/in/pratibha-singh</a>
+                </div>
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">🎨</div>
+                    <h4>Behance Portfolio</h4>
+                    <a href="https://www.behance.net/PratibhaSinghUXR" target="_blank">behance.net/PratibhaSinghUXR</a>
+                </div>
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">✍️</div>
+                    <h4>Substack</h4>
+                    <a href="https://substack.com/@pratibhasingh19" target="_blank">substack.com/@pratibhasingh19</a>
+                </div>
+                <div class="contact-card fade-in">
+                    <div class="contact-icon">📱</div>
+                    <h4>Phone</h4>
+                    <a href="tel:+919901697416">+91 99016 97416</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Pratibha Singh. Built with passion for user-centered research.</p>
+        </div>
+    </footer>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
+        });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+        const mobileBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        mobileBtn.addEventListener('click', () => {
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            navLinks.style.position = 'absolute'; navLinks.style.top = '70px';
+            navLinks.style.left = '0'; navLinks.style.right = '0';
+            navLinks.style.background = 'white'; navLinks.style.flexDirection = 'column';
+            navLinks.style.padding = '1rem 2rem'; navLinks.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+        });
+    </script>
 </body>
 </html>
